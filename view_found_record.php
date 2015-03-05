@@ -1,76 +1,67 @@
-<?php											
-session_start();
-if (!isset($_SESSION['user_level']) or ($_SESSION['user_level'] != 1))
-{
-header("Location: login.php");
-exit();
-}
-?>
 <!doctype html>
 <html lang=en>
 <head>
-<title>View found record page</title>
+<title>View found record</title>
 <meta charset=utf-8>
-<link rel="stylesheet" type="text/css" href="includes.css">
+<link rel="stylesheet" type="text/css" href="transparent.css">
+<link rel="stylesheet" type="text/css" href="admin_form.css">
+<!--Add conditional Javascript-->
+<!--[if lte IE 8]><script src="html5.js">
+</script>
+<![endif]-->
+<!--[if lte IE 8]>
+<link rel="stylesheet" type="text/css" href="ie8_admin.css">
+<![endif]-->
 <style type="text/css">
-p { text-align:center; }
+p.error { color:red; font-size:105%; font-weight:bold; text-align:center;}
+table { width:900px; border-collapse:collapse; }
 </style>
 </head>
 <body>
 <div id="container">
-<?php include("header-admin.php"); ?>
-<?php include("nav.php"); ?>
-<?php include("info-col.php"); ?>
-<div id="content"><!-- Start of the page-specific content. -->
+<header>
+<?php include('includes/header_admin_found.inc'); ?>
+</header>
+<div id="content"><!-- Start of the view found record content. -->
 <h2>Search Result</h2>
 <?php 
-// This script retrieves records from the users table.
-require ('mysqli_connect.php'); // Connect to the db.
-echo '<p>If no record is shown, this is because you had an incorrect or missing entry in the search form.<br>Click the back button on the browser and try again</p>';
-$fname=$_POST['fname'];
-$lname=$_POST['lname'];
-$lname = mysqli_real_escape_string($dbcon, $lname);
-//require ('mysqli_connect.php'); // Connect to the database.
-$q = "SELECT lname, fname, email, DATE_FORMAT(registration_date, '%M %d, %Y') AS regdat, user_id FROM users WHERE lname='$lname' AND fname='$fname' ORDER BY registration_date ASC ";		
-$result = @mysqli_query ($dbcon, $q); // Run the query.
-if ($result) { // If it ran, display the records.
-// Table header.
+// This code fetches a record from the houses table
+require ('mysqli_connect.php'); // Connect to the database
+$ref_num=$_POST['ref_num'];
+$q = "SELECT ref_num,  thumb, price, type, mini_descr, n_room, status FROM houses WHERE ref_num='$ref_num' ";		
+$result = @mysqli_query ($dbcon, $q); // Make the query
+if ($result) { // If the query ran OK, display the record
+// Table header
 echo '<table>
-<tr><td><b>Edit</b></td>
-<td><b>Delete</b></td>
-<td><b>Last Name</b></td>
-<td><b>First Name</b></td>
-<td><b>Email</b></td>
-<td><b>Date Registered</b></td>
+<tr>
+<td><b>Ref_Num</b></td>
+<td><b>Image</b></td>
+<td><b>Price</b></td>
+<td><b>Features</b></td>
+<td><b>Number of Rooms Available</b></td>
+<td><b>Status</b></td>
 </tr>';
-// Fetch and display the records:
+// Fetch and display the record
 while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-	echo '<tr>
-	<td><a href="edit_record.php?id=' . $row['user_id'] . '">Edit</a></td>
-	<td><a href="delete_record.php?id=' . $row['user_id'] . '">Delete</a></td>
-	<td>' . $row['lname'] . '</td>
-	<td>' . $row['fname'] . '</td>
-	<td>' . $row['email'] . '</td>
-	<td>' . $row['regdat'] . '</td>
+		echo '<tr>
+	<td>' . $row['ref_num'] . '</td>
+	<td>  <img src='.$row['thumb'] . '></td>
+	<td>' . $row['price'] . '</td>
+	<td>' . $row['mini_descr'] . '</td>
+	<td>' . $row['n_room'] . '</td>
+	<td>' . $row['status'] . '</td>
 	</tr>';
 	}
-	echo '</table>'; // Close the table.
-	mysqli_free_result ($result); // Free up the resources.	
-} else { // If it did not run OK.
-// Public message:
-	echo '<p class="error">The current users could not be retrieved. We apologize for any inconvenience.</p>';
+	echo '</table>'; // Close the table
+	mysqli_free_result ($result); // Free up the resources	
+} else { // If the query failed to run
+// Error message:
+	echo '<p class="error">The current rooms could not be retrieved. We apologize for any inconvenience.</p>';
 	// Debugging message:
 	echo '<p>' . mysqli_error($dbcon) . '<br><br>Query: ' . $q . '</p>';
-} // End of if ($result). Now display the total number of records/members.
-$q = "SELECT COUNT(user_id) FROM users";
-$result = @mysqli_query ($dbcon, $q);
-$row = @mysqli_fetch_array ($result, MYSQLI_NUM);
-$members = $row[0];
-mysqli_close($dbcon); // Close the database connection.
-echo "<p>Total membership: $members</p>";
+} // End of if ($result).
 ?>
-</div><!-- End of administration page content. -->
-<?php include("footer.php"); ?>
+</div><!--End of the view found record content-->
 </div>
 </body>
 </html>

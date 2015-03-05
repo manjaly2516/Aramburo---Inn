@@ -12,7 +12,7 @@ exit();
 <head>
 <title>Delete a record</title>
 <meta charset=utf-8>
-<link rel="stylesheet" type="text/css" href="includes.css">
+<link rel="stylesheet" type="text/css" href="transparent.css">
 <style type="text/css">
 p { text-align:center; }
 form { text-align:center;}
@@ -27,21 +27,20 @@ input.fl-left { float:left;
 </head>
 <body>
 <div id="container">
-<?php include("header-admin.php"); ?>
-<?php include("nav.php"); ?>
-<?php include("info-col.php"); ?>
+<?php include('includes/header_admin.inc'); ?>
+
 <div id="content"><!-- Start of content for the delete page -->
 <h2>Delete a Record</h2>
 <?php 
 // Check for a valid user ID, through GET or POST:
-if ( (isset($_GET['id'])) && (is_numeric($_GET['id'])) ) { // From view_users.php
-$id = $_GET['id'];
+if ( (isset($_GET['ref_num'])) && (is_numeric($_GET['ref_num'])) ) { // From view_users.php
+$id = $_GET['ref_num'];
 } elseif
-( (isset($_POST['id'])) && (is_numeric($_POST['id'])) ) { // Form submission.
-	$id = $_POST['id'];
+( (isset($_POST['ref_num'])) && (is_numeric($_POST['ref_num'])) ) { // Form submission.
+	$id = $_POST['ref_num'];
 } else { // If no valid ID, stop the script.
 	echo '<p class="error">This page has been accessed in error.</p>';
-	include ('footer.php'); 
+	
 	exit();
 }
 require ('mysqli_connect.php');
@@ -49,7 +48,7 @@ require ('mysqli_connect.php');
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 if ($_POST['sure'] == 'Yes') { // Delete the record.
 	// Make the query:
-		$q = "DELETE FROM users WHERE user_id=$id LIMIT 1";		
+		$q = "DELETE FROM houses WHERE ref_num=$id LIMIT 1";		
 		$result = @mysqli_query ($dbcon , $q);
 		if (mysqli_affected_rows($dbcon ) == 1) { // If it ran OK.
 // Print a message:
@@ -63,7 +62,7 @@ if ($_POST['sure'] == 'Yes') { // Delete the record.
 	}
 } else { // Show the form.
 	// Retrieve the user's information:
-	$q = "SELECT CONCAT(fname, ' ', lname) FROM users WHERE user_id=$id";
+	$q = "SELECT CONCAT(ref_num, ' ', mini_descr) FROM houses WHERE ref_num=$id";
 	$result = @mysqli_query ($dbcon , $q);
 	if (mysqli_num_rows($result) == 1) { // Valid user ID, show the form.
 		// Get the user's information:
@@ -75,7 +74,7 @@ if ($_POST['sure'] == 'Yes') { // Delete the record.
 	<input id="submit-yes" type="submit" name="sure" value="Yes"> 
 	<input id="submit-no" type="submit" name="sure" value="No">
 	
-	<input type="hidden" name="id" value="' . $id . '">
+	<input type="hidden" name="ref_num" value="' . $id . '">
 	</form>';
 
 	} else { // Not a valid user ID.
@@ -86,7 +85,7 @@ if ($_POST['sure'] == 'Yes') { // Delete the record.
 mysqli_close($dbcon );
 		echo '<p>&nbsp;</p>';
 
-include ('footer.php');
+
 ?>
 </div>
 </div>

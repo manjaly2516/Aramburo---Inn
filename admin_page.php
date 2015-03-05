@@ -1,43 +1,31 @@
-<?php											
+<?php
 session_start();
 if (!isset($_SESSION['user_level']) or ($_SESSION['user_level'] != 1))
 {
-header("Location: login.php");
-exit();
+   header("Location: login.php");
+   exit();
 }
 ?>
 <!doctype html>
 <html lang=en>
 <head>
-<title>Edit a room</title>
+<title>Admin page</title>
 <meta charset=utf-8>
 <link rel="stylesheet" type="text/css" href="transparent.css">
+<link rel="stylesheet" type="text/css" href="admin_form.css">
 <style type="text/css">
-p { text-align:center; }
-input.fl-left { float:left; }
-#submit { float:left; }
+p.error { color:red; font-size:105%; font-weight:bold; text-align:center;}
 </style>
 </head>
 <body>
 <div id="container">
+<header>
 <?php include('includes/header_admin.inc'); ?>
-<div id="content"><!-- Start of the page-specific content. -->
-<h2>Edit a Rom</h2>
-<?php 
-// After clicking the Edit link in the found_record.php page, the editing interface appears 
-// The code looks for a valid user ID, either through GET or POST:
-if ( (isset($_GET['ref_num'])) && (is_numeric($_GET['ref_num'])) ) { // From view_users.php
-$id = $_GET['ref_num'];
-} elseif
-( (isset($_POST['ref_num'])) && (is_numeric($_POST['ref_num'])) ) { // Form submission.
-	$id = $_POST['ref_num'];
-} else { // If no valid ID, stop the script.
-	echo '<p class="error">This page has been accessed in error.</p>';
-	
-	exit();
-}
-require ('./mysqli_connect.php'); 
-// Has the form been submitted?
+</header>
+	<div id="content"><!--Start of admin page content-->
+<?php
+// This code is a query that INSERTs a house in the houses table
+// Check that the form has been submitted
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$errors = array(); // Initialize an errors array
 // Check for location
@@ -101,28 +89,42 @@ if (empty($errors)) { // If the query ran OK
 		echo '</p><h3>Please try again.</h3><p><br></p>';
 		}// End of if (empty($errors))
 } // End of the main Submit conditionals
-
-// Select the user's information:
-$q = "SELECT CONCAT(ref_num, ' ', mini_descr) FROM houses WHERE ref_num=$id";
-$result = @mysqli_query ($dbcon, $q);
-if (mysqli_num_rows($result) == 1) { // Valid user ID, display the form.
-	// Get the user's information:
-	$row = mysqli_fetch_array ($result, MYSQLI_NUM);
-	// Create the form:
-	echo '<form action="edit_record.php" method="post">
-<p><label class="label" for="fname">First Name:</label><input class="fl-left" id="fname" type="text" name="fname" size="30" maxlength="30" value="' . $row[0] . '"></p>
-<br><p><label class="label" for="lname">Last Name:</label><input class="fl-left" type="text" name="lname" size="30" maxlength="40" value="' . $row[1] . '"></p>
-<br><p><label class="label" for="email">Email Address:</label><input class="fl-left" type="text" name="email" size="30" maxlength="50" value="' . $row[2] . '"></p>
-<br><p><input id="submit" type="submit" name="submit" value="Edit"></p>
-<br><input type="hidden" name="id" value="' . $id . '" />
-</form>';
-} else { // The user could not be validated
-	echo '<p class="error">This page has been accessed in error.</p>';
-}
-mysqli_close($dbcon);
-
 ?>
+<div id="rightcol">
+<nav>
+<?php include('includes/menu.inc'); ?>
+</nav>
 </div>
+<h2>Add a Room</h2>
+<form  action="admin_page.php" method="post">
+
+<p><label class="label" for="price"><b>Price:</b></label><input id="price" type="text" name="price" size="15" maxlength="15" value="<?php if (isset($_POST['price'])) echo $_POST['price']; ?>">
+</p>
+<p><label class="label"><b>Type:</b></label>	
+<select name="type" >
+	<option value="">- Select -</option>
+	<option value="Vista al Centro">Vista al Centro</option>
+	<option value="Sin Vista al Centro">Sin Vista al Centro</option>
+<br>
+<p><label class="label" for="thumb"><b>Thumbnail:</b></label><input id="thumb" type="text" name="thumb" size="45" maxlength="45" value="<?php if (isset($_POST['thumb'])) echo $_POST['thumb']; ?>">
+</p>
+<p><label class="label"><b>Brief Description:</b></label><textarea name="mini_descr" rows="3" cols="40"></textarea></p>
+<p><label class="label"><b>Number of rooms of this type:</b></label>
+<input id="n_room" type="text" name="n_room" size="15" maxlength="15" value="<?php if (isset($_POST['n_room'])) echo $_POST['n_room']; ?>">
+<p><label class="label"><b>URL for Full Description:</b></label><input id="full_spec" type="text" name="full_spec" size="45" maxlength="45" value="<?php if (isset($_POST['full_spec'])) echo $_POST['full_spec']; ?>">
+<p><label class="label"><b>Status:</b></label>
+<select name="status" >
+	<option value="">- Select -</option>
+	<option value="Available">Available</option>
+	<option value="Sold">Sold</option>
+	</select></p>
+	<div id="submit">
+	<p><input id="submit" type="submit" name="submit" value="Add"></p>
+	</div>
+</form><!--End of the admin page content-->
+<div><br class="clear">
+</div>	
 </div>
+<div></div></div>
 </body>
 </html>
