@@ -10,11 +10,12 @@
 <?php include("header.php"); ?>
 <?php include("nav.php"); ?>
 <?php include("info-col.php"); ?>
-<div id="content"><!-- Start of content for home page -->
+	<div id="content"><!-- Start of the page-specific content. -->
 <h2>This is the Home Page</h2>
 <p>The home page content. The home page content. The home page content. The home page content. The home page content. <br>The home page content. The home page content. The home page content. The home page content. <br>The home page content. The home page content. <br>The home page content. The home page content. The home page content. </p>
-</div><!-- End content. -->
+	<!-- End of the page-specific content. --></div>
 </div>	
-
+	
+	
 </body>
 </html>

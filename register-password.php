@@ -11,11 +11,11 @@ p.error { color:red; font-size:105%; font-weight:bold; text-align:center;
 </head>
 <body>
 <div id="container">
-<?php include("header.php"); ?>
+<?php include("password-header.php"); ?>
 <?php include("nav.php"); ?>
 <?php include("info-col.php"); ?>
 	<div id="content"><!-- Start of the page-specific content. -->
-<?php 
+<p><?php 
 // This page lets a user change their password.
 // Check for form submission:
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

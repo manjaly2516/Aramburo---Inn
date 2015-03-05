@@ -1,12 +1,3 @@
-<?php
-session_start();
-if (!isset($_SESSION['user_level']) or ($_SESSION['user_level'] != 1))
-{
-   header("Location: login.php");
-   exit();
-}
-?>
-
 <!doctype html>
 <html lang=en>
 <head>
@@ -31,7 +22,7 @@ $result = @mysqli_query ($dbcon, $q); // Run the query.
 if ($result) { // If it ran OK, display the records.
 // Table header.
 echo '<table>
-<tr><td align="left"><b>Name</b></td><td align="left"><b>Date Registered</b></td></tr>';
+<tr><td align="left"><b>Edit</b></td><td align="left"><b>Delete</b></td><td align="left"><b>Name</b></td><td align="left"><b>Date Registered</b></td></tr>';
 // Fetch and print all the records:
 while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 	echo '<tr><td align="left">' . $row['name'] . '</td><td align="left">' . $row['regdat'] . '</td></tr>';
@@ -48,7 +39,7 @@ mysqli_close($dbcon); // Close the database connection.
 ?>
 </p>
 </div><!-- End of the page-specific content. -->
-<?php include("footer.php"); ?>
+
 </div>
 </body>
 </html>
