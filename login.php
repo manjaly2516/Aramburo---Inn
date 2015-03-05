@@ -34,19 +34,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	if ($e && $p){//if no problems
 // Retrieve the user_id, first_name and user_level for that email/password combination:
 		$q = "SELECT user_id, fname, user_level FROM users WHERE (email='$e' AND psword=SHA1('$p'))";		
-//run the query and assign it to the variable $result
 		$result = mysqli_query ($dbcon, $q); 
-// Count the number of rows that match the email/password combination
-	if (@mysqli_num_rows($result) == 1) {//The user input matched the database record
-// Start the session, fetch the record and insert the three values in an array
+		// Check the result:
+		if (@mysqli_num_rows($result) == 1) {//The user input matched the database rcoord
+		// Start the session, fetch the record and insert the three values in an array
 		session_start();
 		$_SESSION = mysqli_fetch_array ($result, MYSQLI_ASSOC);
-$_SESSION['user_level'] = (int) $_SESSION['user_level']; // Ensure that the user level is an integer
-$url = ($_SESSION['user_level'] === 1) ? 'admin-page.php' : 'members-page.php'; // Use a ternary operation to set the URL
-header('Location: ' . $url); // Make  the browser load either the members’ or the admin page
+$_SESSION['user_level'] = (int) $_SESSION['user_level']; // Changes the 1 or 2 user level to an integer.
+$url = ($_SESSION['user_level'] === 1) ? 'admin-page.php' : 'members-page.php'; // Ternary operation to set the URL
+header('Location: ' . $url); // Makes the actual page jump. Keep in mind that $url is a relative path.
 exit(); // Cancels the rest of the script.
 	mysqli_free_result($result);
 	mysqli_close($dbcon);
+	ob_end_clean(); // Delete the buffer.
 	} else { // No match was made.
 	echo '<p class="error">The email address and password entered do not match our records.<br>Perhaps you need to register, click the Register button on the header menu</p>';
 	}

@@ -25,7 +25,7 @@ if (!isset($_SESSION['user_level']) or ($_SESSION['user_level'] != 0))
 <?php include("info-col.php"); ?>
 	<div id="content"><!-- Start of the member's page content. -->
 <?php
-echo '<h2>Welcome to the Members\' Page ';
+echo '<h2>Welcome to the Members Page ';
 if (isset($_SESSION['fname'])){
 echo "{$_SESSION['fname']}";
 }
@@ -40,8 +40,8 @@ The members page content. The members page content.<br>The members page content.
 The members page content.</p></div>
 <div id="mid-right-col">
 <h3>Special offers to members only.</h3>
-				<p><b>T-Shirts &pound;10.00</b></p>
-				<img alt="Polo shirt" title="Polo shirt" height="207" src="images/polo.png" width="280"><br>
+<p><b>T-Shirts &pound;10.00</b></p>
+<img alt="Polo shirt" title="Polo shirt" height="207" src="images/polo.png" width="280"><br>
 <br>
 </div>
 </div></div><!-- End of the members page content. -->

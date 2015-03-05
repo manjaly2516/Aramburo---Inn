@@ -42,7 +42,7 @@ li a:active { background:#aecbff; border: 4px inset #aecbff;
 }
 #content { 	margin-left:150px; margin-right:150px;
 }
-table { width:500px; border:1px navy solid; border-collapse:collapse; margin:auto;
+table { width:700px; border:1px navy solid; border-collapse:collapse; margin:auto;
 }
 td { border:1px navy solid; padding:1px 0 1px 4px; text-align:left;
 }

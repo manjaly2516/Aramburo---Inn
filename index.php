@@ -13,9 +13,8 @@
 	<div id="content"><!-- Start of the page-specific content. -->
 <h2>This is the Home Page</h2>
 <p>The home page content. The home page content. The home page content. The home page content. The home page content. <br>The home page content. The home page content. The home page content. The home page content. <br>The home page content. The home page content. <br>The home page content. The home page content. The home page content. </p>
-	<!-- End of the page-specific content. --></div>
+	<!-- End of the home content. --></div>
 </div>	
-	
-	
+<?php include("footer.php"); ?>
 </body>
 </html>
