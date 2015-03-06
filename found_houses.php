@@ -39,7 +39,7 @@ src="images/rosette-128.png" width="128">
 
 $price=$_POST['price'];
 $type=$_POST['type'];
-$b_rooms=$_POST['n_room'];
+
 // This script fetches all the records from the houses table
 require ('mysqli_connect.php'); // Connect to the database.
 // Make the query:
@@ -54,7 +54,7 @@ echo '<table>
 <th><b>Price</b></th>
 <th><b>Features</b></th>
 <th><b>Number of Rooms Available</b></th>
-<th><b>Details</b></th>
+<th><b>Reserva</b></th>
 <th><b>Status</b></th>
 </tr>';
 // Fetch and display the records
@@ -65,7 +65,7 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 	<td>' . $row['price'] . '</td>
 	<td>' . $row['mini_descr'] . '</td>
 	<td>' . $row['n_room'] . '</td>
-	<td>' . $row['full_spec'] . '</td>
+	<td><a href="contact.php?ref_num=' . $row['ref_num'] . '">Reserva</a></td>
 	<td>' . $row['status'] . '</td>
 	</tr>';
 	}

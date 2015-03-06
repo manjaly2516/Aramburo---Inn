@@ -74,7 +74,6 @@ echo '<table>
 // Fetch and print all the records:
 while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 	echo '<tr>
-	<td><a href="edit_record.php?ref_num=' . $row['ref_num'] . '">Edit</a></td>
 	<td><a href="delete_record.php?ref_num=' . $row['ref_num'] . '">Delete</a></td>
 	<td>' . $row['ref_num'] . '</td>
 	<td>  <img src='.$row['thumb'] . '></td>

@@ -116,7 +116,7 @@ if (empty($errors)) { // If the query ran OK
 <select name="status" >
 	<option value="">- Select -</option>
 	<option value="Available">Available</option>
-	<option value="Sold">Sold</option>
+	<option value="Sold">Full</option>
 	</select></p>
 	<div id="submit">
 	<p><input id="submit" type="submit" name="submit" value="Add"></p>
