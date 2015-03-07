@@ -28,7 +28,7 @@ if (isset($_GET['p']) && is_numeric
 $pages=$_GET['p'];
 }else{//use the next block of code to calculate the number of pages
 //First, check for the total number of records
-$q = "SELECT COUNT(id) FROM roomdetail";
+$q = "SELECT COUNT(id) FROM reservaciones";
 $result = @mysqli_query ($dbcon, $q);
 $row = @mysqli_fetch_array ($result, MYSQLI_NUM);
 $records = $row[0];
@@ -47,7 +47,7 @@ $start = $_GET['s'];
 $start = 0;
 }
 // Make the query:
-$q = "SELECT id, username, checkin_date, checkout_date, room_type, no_of_room, amount FROM roomdetail ORDER BY id ASC LIMIT $start, $pagerows";		
+$q = "SELECT id, user_id, date_start, date_end, comments, reservation_code, amount FROM reservaciones ORDER BY id ASC LIMIT $start, $pagerows";		
 $result = @mysqli_query ($dbcon, $q); // Run the query.
 //$houses = mysqli_num_rows($result);
 if ($result) { // If it ran OK, display the records.
@@ -58,20 +58,20 @@ echo '<table>
 <td><b>Usuario</b></td>
 <td><b>Checkin</b></td>
 <td><b>Checkout</b></td>
-<td><b>Tipo de Hab</b></td>
-<td><b>Número</b></td>
-<td><b>Precio</b></td>
+<td><b>Comentarios</b></td>
+<td><b>RCode</b></td>
+<td><b>Cliente</b></td>
 </tr>';
 // Fetch and print all the records:
 while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 	echo '<tr>
 	<td>' . $row['id'] . '</td>
-	<td>' . $row['username'] . '</td>
-	<td>' . $row['checkin_date'] . '</td>
-	<td>' . $row['checkout_date'] . '</td>
-	<td>' . $row['room_type'] . '</td>
-	<td>' . $row['no_of_room'] . '</td>
-	<td>' . $row['amount'] . '</td>
+	<td>' . $row['user_id'] . '</td>
+	<td>' . $row['date_start'] . '</td>
+	<td>' . $row['date_end'] . '</td>
+	<td>' . $row['comments'] . '</td>
+	<td>' . $row['reservation_code'] . '</td>
+	<td>' . $row['costumer_id'] . '</td>
 	</tr>';
 	}
 	echo '</table>'; // Close the table.
@@ -82,7 +82,7 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 	// Debugging message:
 	echo '<p>' . mysqli_error($dbcon) . '<br><br>Query: ' . $q . '</p>';
 } // End of if ($result). Now display the total number of records/houses
-$q = "SELECT COUNT(ref_num) FROM roomdetail";
+$q = "SELECT COUNT(ref_num) FROM reservaciones";
 $result = @mysqli_query ($dbcon, $q);
 $row = @mysqli_fetch_array ($result, MYSQLI_NUM);
 $houses = $row[0];
