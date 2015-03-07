@@ -21,9 +21,11 @@ td { padding-left:5px; padding-right:5px; }
 </head>
 <body>
 <div id="container">
+
 <header>
 <?php include("includes/header_admin_found.inc"); ?>
 </header>
+
 <div id="content"><!-- Start of table display page content of  -->
 <h3>Rooms displayed four at a time</h3>
 <p>

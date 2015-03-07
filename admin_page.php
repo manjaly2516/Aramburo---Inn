@@ -20,8 +20,9 @@ p.error { color:red; font-size:105%; font-weight:bold; text-align:center;}
 <body>
 <div id="container">
 <header>
-<?php include('includes/header_admin.inc'); ?>
+<?php include('includes/header_admin_found.inc'); ?>
 </header>
+
 	<div id="content"><!--Start of admin page content-->
 <?php
 // This code is a query that INSERTs a house in the houses table
@@ -93,11 +94,7 @@ if (empty($errors)) { // If the query ran OK
 		}// End of if (empty($errors))
 } // End of the main Submit conditionals
 ?>
-<div id="rightcol">
-<nav>
-<?php include('includes/menu.inc'); ?>
-</nav>
-</div>
+
 
 <h2>Add a Room</h2>
 <form  action="admin_page.php" method="post">
