@@ -51,7 +51,10 @@ $price = preg_replace('/\D+/', '', ($_POST['price']));
 	} else { $mini_descr = strip_tags(($_POST['mini_descr']));
 	}
 	// Check for number of bedrooms
-	
+	if (empty($_POST['n_room'])) {
+			 $errors[] = 'You forgot to enter the number';
+	} else { $n_room = strip_tags(($_POST['n_room']));
+	}
 	// Check if a thumbnail url has been entered
 	if (empty($_POST['thumb'])) {
 				$errors[] = 'You forgot to enter the thumbnail url';
@@ -95,36 +98,71 @@ if (empty($errors)) { // If the query ran OK
 <?php include('includes/menu.inc'); ?>
 </nav>
 </div>
+
 <h2>Add a Room</h2>
 <form  action="admin_page.php" method="post">
 
-<p><label class="label" for="price"><b>Price:</b></label><input id="price" type="text" name="price" size="15" maxlength="15" value="<?php if (isset($_POST['price'])) echo $_POST['price']; ?>">
+<p>
+	<label class="label" for="price">
+	<b>Price:</b></label>
+	<input id="price" type="text" name="price" size="15" maxlength="15" value="<?php if (isset($_POST['price'])) echo $_POST['price']; ?>">
 </p>
-<p><label class="label"><b>Type:</b></label>	
+
+<p>
+	<label class="label" for="type"><b>Type:</b></label>	
+
 <select name="type" >
 	<option value="">- Select -</option>
 	<option value="Vista al Centro">Vista al Centro</option>
 	<option value="Sin Vista al Centro">Sin Vista al Centro</option>
-<br>
-<p><label class="label" for="thumb"><b>Thumbnail:</b></label><input id="thumb" type="text" name="thumb" size="45" maxlength="45" value="<?php if (isset($_POST['thumb'])) echo $_POST['thumb']; ?>">
 </p>
-<p><label class="label"><b>Brief Description:</b></label><textarea name="mini_descr" rows="3" cols="40"></textarea></p>
-<p><label class="label"><b>Number of rooms of this type:</b></label>
-<input id="n_room" type="text" name="n_room" size="15" maxlength="15" value="<?php if (isset($_POST['n_room'])) echo $_POST['n_room']; ?>">
-<p><label class="label"><b>URL for Full Description:</b></label><input id="full_spec" type="text" name="full_spec" size="45" maxlength="45" value="<?php if (isset($_POST['full_spec'])) echo $_POST['full_spec']; ?>">
-<p><label class="label"><b>Status:</b></label>
+
+<p>
+	<label class="label" for="thumb">
+	<b>Image:</b></label>
+	<input id="thumb" type="text" name="thumb" size="15" maxlength="50" value="<?php if (isset($_POST['price'])) echo $_POST['price']; ?>">
+</p>
+
+<p>
+	<label class="label" for="mini_descr">
+	<b>Brief Description:</b></label>
+	<textarea name="mini_descr" rows="3" cols="40"></textarea>
+</p>
+
+<p>
+	<label class="label" for="n_room">
+	<b>Number of rooms of this type:</b></label>
+	<input id="n_room" type="text" name="n_room" size="15" maxlength="15" value="<?php if (isset($_POST['n_room'])) echo $_POST['n_room']; ?>">
+</p>
+
+<p>
+	<label class="label">
+	<b>URL for Full Description:</b></label>
+	<input id="full_spec" type="text" name="full_spec" size="45" maxlength="45" value="<?php if (isset($_POST['full_spec'])) echo $_POST['full_spec']; ?>">
+</p>
+
+<p>
+	<label class="label" for="status"><b>Status:</b></label>
+
 <select name="status" >
 	<option value="">- Select -</option>
 	<option value="Available">Available</option>
 	<option value="Sold">Full</option>
-	</select></p>
+	</select>
+</p>
+	
 	<div id="submit">
 	<p><input id="submit" type="submit" name="submit" value="Add"></p>
 	</div>
 </form><!--End of the admin page content-->
-<div><br class="clear">
+
+<div>
+	<br class="clear">
 </div>	
 </div>
-<div></div></div>
+
+<div>
+</div>
+</div>
 </body>
 </html>
