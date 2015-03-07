@@ -62,6 +62,11 @@ exit(); // Cancels the rest of the script.
 	mysqli_close($dbcon);
 	} // End of SUBMIT conditional.
 ?>
+<div id="rightcol">
+<nav>
+<?php include('includes/menu.inc'); ?>
+</nav>
+</div><!--end of side menu column-->
 <!-- Display the form fields-->
 <div id="loginfields">
 <?php include ('login_page.inc.php'); ?>
