@@ -1,6 +1,7 @@
 <?php
 // This is the API, 2 possibilities: show the app list or show a specific app by id.
 // This would normally be pulled from a database but for demo purposes, I will be hardcoding the return values.
+<<<<<<< HEAD
 /*rooms =[
   {
     id:1,
@@ -134,7 +135,7 @@ if (isset($_GET["action"]) && in_array($_GET["action"], $possible_url))
 {
   switch ($_GET["action"])
     {
-
+<<<<<<< HEAD
       case "get_app_list":
         $value = get_app_list();
         break;
@@ -155,8 +156,15 @@ if (isset($_GET["action"]) && in_array($_GET["action"], $possible_url))
         case "get_room_list":
           $value = get_room_list();
         break;
-
-        case "autenthicate":
+    }
+}
+//http://localhost/hotel/api.php/api.php?action=get_room_list
+//http://localhost/hotel/api.php/api.php?action=get_room&id=1003
+=======
+      case "get_user_by_uname":
+        $value = get_user_by_uname();
+        break;
+      case "autenthicate":
         if (isset($_GET["uname"],$_GET["psword"]))
           $value = get_user_by_uname_and_passsword($_GET["uname"],$_GET["psword"]);
         else
@@ -164,10 +172,8 @@ if (isset($_GET["action"]) && in_array($_GET["action"], $possible_url))
         break;
     }
 }
-//http://localhost/hotel/api.php/api.php?action=get_room_list
-//http://localhost/hotel/api.php/api.php?action=get_room&id=1003
 
- 
+>>>>>>> origin/Aramburo-backend
 //return JSON array
 exit(json_encode($value));
 ?>
