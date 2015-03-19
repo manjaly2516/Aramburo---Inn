@@ -36,10 +36,13 @@ function get_room_list(){
   $q = "SELECT ref_num, thumb, type,price, mini_descr, n_room, status FROM houses  ";    
   $result = @mysqli_query ($dbcon, $q);
   $room_array  = array();
+  $c = 0;
   while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+     
       
       $room_array = array("id" => $row['ref_num'],"name" => "null", "type" => $row['type'], "max_people" => $row['n_room'], "reservation" => "0", "price" => $row['price']);
-    $room_list = array($room_array);
+    $room_list [$c] = array($room_array);
+     $c = $c +1;
    
   }
   mysqli_free_result ($result);
