@@ -101,7 +101,7 @@ function get_app_list()
   return $app_list;
 }
 
-$possible_url = array("get_app_list", "get_app", "get_room", "get_room_list", "post_room");
+$possible_url = array("get_app_list", "get_app", "get_room", "get_room_list", "post_room", "delete_room");
 
 $value = "An error has occurred ";
 
@@ -129,22 +129,35 @@ function get_user_by_uname_and_passsword($uname, $psword)
 }
 
 function post_room($price, $type, $mini_descr, $n_room, $thumb, $status){
-  echo 'amde';
+  $info = array();
   require ('mysqli_connect.php');
   $q = "INSERT INTO houses (ref_num, price, type, mini_descr, n_room, thumb, status) VALUES (' ', '$price', '$type', '$mini_descr', '$n_room', '$thumb', '$status' )";
     $result = @mysqli_query ($dbcon, $q); // Make the query
     if ($result) { // If it ran OK.
-    echo '<h2>The room was successfully registered</h2><br>';
+        $info = array("status" =>'The room was successfully registered');
     } else { // If the query did not run OK
     // Error message:
-      echo '<h2>System Error</h2>
-      <p class="error">The room could not be added due to a system error. We apologize for any inconvenience.</p>'; 
-      // Debugging message:
-      echo '<p>' . mysqli_error($dbcon) . '<br><br>Query: ' . $q . '</p>';
+      $info = array("error" =>'Something went wrong');
     } // End of if ($result)
     mysqli_close($dbcon); // Close 
+    return $info;
 }
 
+function delete_room($id){
+  $info = array();
+  require ('mysqli_connect.php');
+  $q = "DELETE FROM houses WHERE ref_num=$id LIMIT 1";    
+    $result = @mysqli_query ($dbcon , $q);
+    
+    if (mysqli_affected_rows($dbcon ) == 1) { // If it ran OK.
+// Print a message:
+      $info = array("status" =>'The record has been deleted');
+    } else { // If the query did not run OK.
+     $info = array("error" =>'The record could not be deleted');
+    }
+  mysqli_close($dbcon );
+  return $info;
+}
 if (isset($_GET["action"]) && in_array($_GET["action"], $possible_url))
 {
   switch ($_GET["action"])
@@ -183,8 +196,11 @@ if (isset($_GET["action"]) && in_array($_GET["action"], $possible_url))
             $value = post_room($_GET["price"],$_GET["type"], $_GET["mini_descr"], $_GET["n_room"], $_GET["thumb"], $_GET["status"] );
           else
             $value = "Missing argument";
-        
-
+        case "delete_room":
+           if (isset($_GET["id"]))
+            $value = delete_room($_GET["id"] );
+          else
+            $value = "Missing argument";
         break;
     }
 }
@@ -192,8 +208,8 @@ if (isset($_GET["action"]) && in_array($_GET["action"], $possible_url))
 
 //http://localhost/hotel/api.php/api.php?action=get_room_list
 //http://localhost/hotel/api.php/api.php?action=get_room&id=1003
-//http://localhost/hotel/api.php/api.php?action=post_room&id=1003
-
+//http://localhost/hotel/api.php/api.php?action=post_room&price=1003&type=double&mini_descr=bonita&n_room=3&thumb=lalala&status=free
+//http://localhost/simpleIdb/api.php/api.php?action=delete_room&id=1007
  
 //return JSON array
 exit(json_encode($value));
