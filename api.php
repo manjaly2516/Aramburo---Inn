@@ -104,7 +104,7 @@ function get_app_list()
 $possible_url = array("get_app_list", "get_app", "get_room", "get_room_list");
 
 $value = "An error has occurred ";
-=======
+
 
 function get_user_by_uname_and_passsword($uname, $psword)
 {
@@ -128,10 +128,7 @@ function get_user_by_uname_and_passsword($uname, $psword)
   return $user_info;
 }
 
-$possible_url = array("autenthicate", "get_app");
 
-$value = "An error has occurred, url does not defined";
->>>>>>> origin/Aramburo-backend
 
 if (isset($_GET["action"]) && in_array($_GET["action"], $possible_url))
 {
