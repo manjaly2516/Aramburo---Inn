@@ -101,7 +101,7 @@ function get_app_list()
   return $app_list;
 }
 
-$possible_url = array("get_app_list", "get_app", "get_room", "get_room_list");
+$possible_url = array("get_app_list", "get_app", "get_room", "get_room_list", "post_room");
 
 $value = "An error has occurred ";
 
@@ -128,7 +128,22 @@ function get_user_by_uname_and_passsword($uname, $psword)
   return $user_info;
 }
 
-
+function post_room($price, $type, $mini_descr, $n_room, $thumb, $status){
+  echo 'amde';
+  require ('mysqli_connect.php');
+  $q = "INSERT INTO houses (ref_num, price, type, mini_descr, n_room, thumb, status) VALUES (' ', '$price', '$type', '$mini_descr', '$n_room', '$thumb', '$status' )";
+    $result = @mysqli_query ($dbcon, $q); // Make the query
+    if ($result) { // If it ran OK.
+    echo '<h2>The room was successfully registered</h2><br>';
+    } else { // If the query did not run OK
+    // Error message:
+      echo '<h2>System Error</h2>
+      <p class="error">The room could not be added due to a system error. We apologize for any inconvenience.</p>'; 
+      // Debugging message:
+      echo '<p>' . mysqli_error($dbcon) . '<br><br>Query: ' . $q . '</p>';
+    } // End of if ($result)
+    mysqli_close($dbcon); // Close 
+}
 
 if (isset($_GET["action"]) && in_array($_GET["action"], $possible_url))
 {
@@ -162,10 +177,22 @@ if (isset($_GET["action"]) && in_array($_GET["action"], $possible_url))
         else
           $value = "Missing argument";
         break;
+        //$price, $type, $mini_descr, $n_room, $thumb, $status
+        case "post_room":
+          if (isset($_GET["price"]))
+            $value = post_room($_GET["price"],$_GET["type"], $_GET["mini_descr"], $_GET["n_room"], $_GET["thumb"], $_GET["status"] );
+          else
+            $value = "Missing argument";
+        
+
+        break;
     }
 }
+
+
 //http://localhost/hotel/api.php/api.php?action=get_room_list
 //http://localhost/hotel/api.php/api.php?action=get_room&id=1003
+//http://localhost/hotel/api.php/api.php?action=post_room&id=1003
 
  
 //return JSON array
