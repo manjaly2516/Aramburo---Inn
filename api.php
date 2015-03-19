@@ -33,14 +33,14 @@ reservations=[
 function get_room_list(){
   
   require ('mysqli_connect.php');
-  $q = "SELECT ref_num, thumb, type,price, mini_descr, n_room, status FROM houses  ";    
+  $q = "SELECT id,  precio, camas, tipo, numeroHabitacion, comentarios FROM habitaciones ";   
   $result = @mysqli_query ($dbcon, $q);
   $room_array  = array();
   $c = 0;
   while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
      
       
-      $room_array = array("id" => $row['ref_num'],"name" => "null", "type" => $row['type'], "max_people" => $row['n_room'], "reservation" => "0", "price" => $row['price']);
+      $room_array = array("id" => $row['id'],"precio" => $row['precio'], "tipo" => $row['tipo'], "numeroHabitacion" => $row['numeroHabitacion'], "comentarios" => $row['comentarios']);
     $room_list [$c] = array($room_array);
      $c = $c +1;
    
@@ -53,14 +53,14 @@ function get_room_list(){
 function get_room_by_id($id) {
   require ('mysqli_connect.php');
   $room_info = array();
-  $q = "SELECT ref_num,  thumb, price, type, mini_descr, n_room, status FROM houses WHERE ref_num='$id' ";
+  $q = "SELECT id,  precio, camas, tipo, numeroHabitacion, comentarios FROM habitaciones WHERE id='$id' ";
   
   $result = @mysqli_query ($dbcon, $q);
  
   if($result) {
     
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-    $room_info = array("id" => $row['ref_num'],"name" => "null", "type" => $row['type'], "max_people" => $row['n_room'], "reservation" => "0", "price" => $row['price']);
+    $room_info = array("id" => $row['id'],"precio" => $row['precio'], "tipo" => $row['tipo'], "numeroHabitacion" => $row['numeroHabitacion'], "comentarios" => $row['comentarios']);
     
     } //end while
   } //end if
@@ -128,11 +128,19 @@ function get_user_by_uname_and_passsword($uname, $psword)
   return $user_info;
 }
 
-function post_room($price, $type, $mini_descr, $n_room, $thumb, $status){
+function post_room($precio, $camas, $tipo, $numeroHabitacion, $comentarios){
   $info = array();
   require ('mysqli_connect.php');
-  $q = "INSERT INTO houses (ref_num, price, type, mini_descr, n_room, thumb, status) VALUES (' ', '$price', '$type', '$mini_descr', '$n_room', '$thumb', '$status' )";
+  $a = "SELECT *  FROM habitaciones ";   
+  $r = @mysqli_query ($dbcon, $a);
+  
+  $rows = mysqli_num_rows ($r);
+  
+  $rows = $rows +1;
+
+  $q = "INSERT INTO habitaciones (id, precio, camas, tipo, numeroHabitacion, comentarios) VALUES ('$rows', '$precio', '$camas', '$tipo', '$numeroHabitacion', '$comentarios' )";
     $result = @mysqli_query ($dbcon, $q); // Make the query
+    
     if ($result) { // If it ran OK.
         $info = array("status" =>'The room was successfully registered');
     } else { // If the query did not run OK
@@ -146,7 +154,7 @@ function post_room($price, $type, $mini_descr, $n_room, $thumb, $status){
 function delete_room($id){
   $info = array();
   require ('mysqli_connect.php');
-  $q = "DELETE FROM houses WHERE ref_num=$id LIMIT 1";    
+  $q = "DELETE FROM habitaciones WHERE id=$id LIMIT 1";    
     $result = @mysqli_query ($dbcon , $q);
     
     if (mysqli_affected_rows($dbcon ) == 1) { // If it ran OK.
@@ -190,12 +198,14 @@ if (isset($_GET["action"]) && in_array($_GET["action"], $possible_url))
         else
           $value = "Missing argument";
         break;
-        //$price, $type, $mini_descr, $n_room, $thumb, $status
+        //$precio, $camas, $tipo, $numeroHabitacion, $comentarios
         case "post_room":
-          if (isset($_GET["price"]))
-            $value = post_room($_GET["price"],$_GET["type"], $_GET["mini_descr"], $_GET["n_room"], $_GET["thumb"], $_GET["status"] );
+          if (isset($_GET["precio"],$_GET["camas"],$_GET["tipo"],$_GET["numeroHabitacion"], $_GET["comentarios"] ))
+            $value = post_room($_GET["precio"],$_GET["camas"], $_GET["tipo"], $_GET["numeroHabitacion"], $_GET["comentarios"] );
           else
             $value = "Missing argument";
+        break;
+
         case "delete_room":
            if (isset($_GET["id"]))
             $value = delete_room($_GET["id"] );
@@ -205,6 +215,7 @@ if (isset($_GET["action"]) && in_array($_GET["action"], $possible_url))
     }
 }
 
+//http://localhost/simpleIdb/api.php/api.php?action=post_room&precio=10&camas=4&tipo=lala&numeroHabitacion=3&comentarios=lalala
 
 //http://localhost/hotel/api.php/api.php?action=get_room_list
 //http://localhost/hotel/api.php/api.php?action=get_room&id=1003
